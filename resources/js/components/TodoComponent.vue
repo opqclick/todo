@@ -17,9 +17,9 @@
                         </div>
                         <div class="mb-3">
                           <label for="deadline" class="form-label">Deadline</label>
-                          <input class="form-control" type="datetime-local" id="deadline" v-model="input_deadline">
+                          <input class="form-control" type="date" id="deadline" v-model="input_deadline">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" @click="saveTask()">Submit</button>
                       </div>
                     </div>
                 </div>
@@ -39,24 +39,16 @@
                     </thead>
                     <tbody>
                     <tr v-for="(todo, index) in todos" :key="index">
-                      <th scope="row">{{ ++index }}</th>
+                      <th scope="row">{{ ++ index }}</th>
                       <td>{{ todo.title }}</td>
                       <td>{{ todo.description.slice(0, 50) }}</td>
                       <td>{{ todo.deadline }}</td>
                       <td class="text-center">
                         <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
                         <button type="button" class="btn btn-sm  btn-outline-success">Complete</button>
-                        <button type="button" class="btn btn-sm  btn-outline-danger">Delete</button>
+                        <button type="button" class="btn btn-sm  btn-outline-danger" @click="deleteTask(todo.id)">Delete</button>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                      <td>
-
-                      </td>
-                      </td>
-                    </tr>
-
                     </tbody>
                   </table>
                 </div>
@@ -84,6 +76,30 @@
        this.axios.get(this.api).then(res=>{
          this.todos = res.data;
        })
+      },
+      methods:{
+        saveTask(){
+          if (this.input_title.length > 0 && this.input_description.length > 0 && this.input_deadline.length > 0){
+            let data = {'title': this.input_title, 'description': this.input_description, 'deadline': this.input_deadline};
+
+            this.axios.post(this.api, data).then(res=>{
+              this.todos.push(res.data);
+              this.data = '';
+            })
+          }
+        },
+        deleteTask(id){
+          if (id){
+            this.axios.delete(this.api+'/'+id).then(res=>{
+              let index = this.todos.findIndex(object => {
+                return object.id === id;
+              });
+
+              this.todos.splice(index,1);
+            })
+          }
+        },
+
       }
     }
 </script>

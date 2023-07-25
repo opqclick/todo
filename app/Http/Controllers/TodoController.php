@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
@@ -28,7 +29,10 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return Carbon::createFromFormat('Y-m-d', $request->deadline);
+
+        $todo = Todo::create($request->all());
+        return response()->json($todo);
     }
 
     /**
@@ -60,6 +64,8 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+
+        return response()->json('Success!');
     }
 }
