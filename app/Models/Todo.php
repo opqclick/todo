@@ -16,7 +16,7 @@ class Todo extends Model
     protected function deadline(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => Carbon::create($value),
+            get: fn (string $value) => Carbon::create($value)->format('Y-m-d'),
             set: fn (string $value) => Carbon::create($value),
         );
     }
