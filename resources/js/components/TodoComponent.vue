@@ -3,31 +3,40 @@
         <div class="row mt-2">
           <div class="col-md-6">
             <div class="card">
-                    <div class="card-header">Todo Form</div>
-
-                    <div class="card-body">
-                      <div class="inputs-area mb-2">
-                        <div class="mb-3">
-                          <label for="title" class="form-label">Title</label>
-                          <input type="text" class="form-control" id="title" aria-describedby="title" v-model="input_title">
-                        </div>
-                        <div class="mb-3">
-                          <label for="description" class="form-label">Description</label>
-                          <textarea class="form-control" placeholder="Leave a description here" id="description" style="height: 100px" v-model="input_description"></textarea>
-                        </div>
-                        <div class="mb-3">
-                          <label for="deadline" class="form-label">Deadline</label>
-                          <input class="form-control" type="date" id="deadline" v-model="input_deadline">
-                        </div>
-
-                        <button v-if="add_task" type="button" class="btn btn-primary" @click="saveTask()">Add</button>
-
-                        <button v-else type="button" class="btn btn-primary" @click="updateTask(update_task_id)">Update</button>
-                      </div>
-                      <button type="button" class="btn btn-warning" @click="resetInputs()">Clear Inputs</button>
+              <div class="card-header">Todo Form</div>
+              <div class="card-body">
+                  <div class="inputs-area mb-2">
+                    <div class="mb-3">
+                      <label for="title" class="form-label">Title</label>
+                      <input type="text" class="form-control" id="title" aria-describedby="title" v-model="input_title">
+                    </div>
+                    <div class="mb-3">
+                      <label for="description" class="form-label">Description</label>
+                      <textarea class="form-control" placeholder="Leave a description here" id="description" style="height: 100px" v-model="input_description"></textarea>
                     </div>
 
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="deadline" class="form-label">Deadline</label>
+                        <input class="form-control" type="date" id="deadline" v-model="input_deadline">
+                      </div>
+
+                      <div class="col-md-6 mb-3">
+                        <label for="assign" class="form-label">Assign</label>
+                        <select class="form-select" aria-label="Default select example">
+                          <option  v-for="(user, index) in users" :key="index" >{{ user.email }}</option>
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <button v-if="add_task" type="button" class="btn btn-primary" @click="saveTask()">Add</button>
+
+                    <button v-else type="button" class="btn btn-primary" @click="updateTask(update_task_id)">Update</button>
+                  </div>
+                  <button type="button" class="btn btn-warning" @click="resetInputs()">Clear Inputs</button>
                 </div>
+            </div>
           </div>
           <div class="col-md-6">
             <div class="card">
@@ -70,18 +79,24 @@
         return{
           todos:[],
           api: 'https://tt-todo.test/api/todos',
+          users_api: 'https://tt-todo.test/api/users',
           input_title: '',
           input_description: '',
           input_deadline: '',
           add_task: true,
-          update_task_id: ''
+          update_task_id: '',
+          users: [],
         }
       },
       mounted() {
         // Get api data
-       this.axios.get(this.api).then(res=>{
+        this.axios.get(this.api).then(res=>{
          this.todos = res.data;
-       })
+        });
+
+        this.axios.get(this.users_api).then(res=>{
+          this.users = res.data;
+        });
       },
       methods:{
         saveTask(){

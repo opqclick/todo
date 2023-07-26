@@ -25,4 +25,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/todo', function (){
         return view('todo');
     })->name('todo');
+
+
 });
