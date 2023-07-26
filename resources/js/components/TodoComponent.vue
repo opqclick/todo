@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Todo </div>
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <div class="card">
+                    <div class="card-header">Todo Form</div>
 
                     <div class="card-body">
                       <div class="inputs-area mb-2">
@@ -28,38 +28,38 @@
                     </div>
 
                 </div>
-
-              <div class="card mt-2">
-                <div class="card-header">Todos </div>
-                <div class="card-body">
-                  <table class="table">
-                    <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Title</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Deadline</th>
-                      <th scope="col" class="text-center" style="width: 200px">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(todo, index) in todos" :key="index">
-                      <th scope="row">{{ ++ index }}</th>
-                      <td>{{ todo.title }}</td>
-                      <td>{{ todo.description.slice(0, 50) }}</td>
-                      <td>{{ todo.deadline }}</td>
-                      <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-outline-primary" @click="editTask(todo.id)">Edit</button>
-                        <button type="button" class="btn btn-sm  btn-outline-success">Complete</button>
-                        <button type="button" class="btn btn-sm  btn-outline-danger" @click="deleteTask(todo.id)">Delete</button>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">Todo List </div>
+              <div class="card-body">
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col" class="text-center" style="width: 200px">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="(todo, index) in todos" :key="index">
+                    <th scope="row">{{ ++ index }}</th>
+                    <td>{{ todo.title }}</td>
+                    <td>{{ todo.description.slice(0, 50) }}</td>
+                    <td>{{ todo.deadline }}</td>
+                    <td class="text-center">
+                      <button type="button" class="btn btn-sm btn-outline-primary" @click="editTask(todo.id)">Edit</button>
+                      <button type="button" class="btn btn-sm  btn-outline-success">Complete</button>
+                      <button type="button" class="btn btn-sm  btn-outline-danger" @click="deleteTask(todo.id)">Delete</button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
-
             </div>
+          </div>
         </div>
     </div>
 </template>
