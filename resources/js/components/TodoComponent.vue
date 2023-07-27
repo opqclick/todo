@@ -54,7 +54,7 @@
 
                       <div class="col-md-6 mb-3">
                         <label for="assign" class="form-label">Assign</label>
-                        <select v-model="assigned_to" class="form-select" aria-label="Default select example">
+                        <select v-model="input_assigned_to" class="form-select" aria-label="Default select example">
                           <option selected>Please select one</option>
                           <option  v-for="(user, index) in users" v-bind:value="user.id">{{ user.email }}</option>
                         </select>
@@ -85,6 +85,7 @@
           input_title: '',
           input_description: '',
           input_deadline: '',
+          input_assigned_to: '',
           add_task: true,
           update_task_id: '',
           users: [],
@@ -131,6 +132,7 @@
             this.input_title = this.todos[index].title;
             this.input_description = this.todos[index].description;
             this.input_deadline = this.todos[index].deadline;
+            this.input_assigned_to = this.todos['index'].assigned_to;
             this.add_task = false;
             this.update_task_id = id;
           }
@@ -142,12 +144,13 @@
           });
 
           if (this.input_title.length > 0 && this.input_description.length > 0 && this.input_deadline.length > 0){
-            let data = {'title': this.input_title, 'description': this.input_description, 'deadline': this.input_deadline};
+            let data = {'title': this.input_title, 'description': this.input_description, 'deadline': this.input_deadline, 'assigned_to': this.input_assigned_to};
 
             this.axios.put(this.api+'/'+id, data).then(res=>{
               this.todos[index].title = res.data.title;
               this.todos[index].description = res.data.description;
               this.todos[index].deadline = res.data.deadline;
+              this.todos[index].assigned_to = res.data.assigned_to;
               this.resetInputs();
 
               this.$toast.show('Task updated!', {

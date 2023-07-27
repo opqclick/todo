@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\LaravelQueueMailJob;
+use App\Mail\TaskAssigned;
 use App\Models\Todo;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TodoController extends Controller
 {
@@ -34,6 +38,8 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
+        //return response()->json($request->assigned_to);
+
         $data = [
             'title' => $request->title,
             'description' => $request->description,
@@ -41,7 +47,19 @@ class TodoController extends Controller
             'assigned_to' => !empty($request->assigned_to) ? $request->assigned_to : Auth::user()->id,
         ];
 
+        //return response()->json($data);
+
         $todo = Todo::create($data);
+
+        if(!empty($request->assigned_to)){
+            // Send email notification to the assignee
+            $user = User::findOrFail($request->assigned_to);
+
+            //return response()->json($user);
+
+
+            dispatch(new LaravelQueueMailJob($user, $todo));
+        }
 
         return response()->json($todo);
     }
