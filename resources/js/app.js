@@ -10,7 +10,11 @@ import { createApp } from 'vue';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+import Toaster from '@meforma/vue-toaster';
+
 const app = createApp({});
+
+app.use(Toaster)
 
 app.use(VueAxios, axios)
 

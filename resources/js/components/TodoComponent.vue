@@ -113,6 +113,12 @@
             this.axios.post(this.api, data).then(res=>{
               this.todos.push(res.data);
               this.data = '';
+
+              this.$toast.show('Task created!', {
+                type: 'success',
+                // all of other options may go here
+                position: 'bottom-right'
+              });
             })
           }
         },
@@ -126,7 +132,7 @@
             this.input_description = this.todos[index].description;
             this.input_deadline = this.todos[index].deadline;
             this.add_task = false;
-            this.update_task_id = id
+            this.update_task_id = id;
           }
 
         },
@@ -143,6 +149,12 @@
               this.todos[index].description = res.data.description;
               this.todos[index].deadline = res.data.deadline;
               this.resetInputs();
+
+              this.$toast.show('Task updated!', {
+                type: 'success',
+                // all of other options may go here
+                position: 'bottom-right'
+              });
             })
           }
         },
@@ -154,6 +166,12 @@
           if (index >= 0){
             this.axios.delete(this.api+'/'+id).then(res=>{
               this.todos.splice(index,1);
+
+              this.$toast.show('Task deleted!', {
+                type: 'success',
+                // all of other options may go here
+                position: 'bottom-right'
+              });
             })
           }
         },
@@ -167,6 +185,12 @@
           if (index >= 0){
             this.axios.post(this.update_task_status_api+'/'+id, data).then(res=>{
               this.todos.splice(index,1);
+
+              this.$toast.show('Task completed!', {
+                type: 'success',
+                // all of other options may go here
+                position: 'bottom-right'
+              });
             })
           }
         },
