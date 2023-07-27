@@ -23,7 +23,7 @@
                     <td>{{ todo.deadline }}</td>
                     <td class="text-center">
                       <button type="button" class="btn btn-sm btn-outline-primary" @click="editTask(todo.id)">Edit</button>
-                      <button type="button" class="btn btn-sm  btn-outline-success">Complete</button>
+                      <button type="button" class="btn btn-sm  btn-outline-success" @click="updateTaskStatus(todo.id)">Done</button>
                       <button type="button" class="btn btn-sm  btn-outline-danger" @click="deleteTask(todo.id)">Delete</button>
                     </td>
                   </tr>
@@ -54,8 +54,9 @@
 
                       <div class="col-md-6 mb-3">
                         <label for="assign" class="form-label">Assign</label>
-                        <select class="form-select" aria-label="Default select example">
-                          <option  v-for="(user, index) in users" :key="index" >{{ user.email }}</option>
+                        <select v-model="assigned_to" class="form-select" aria-label="Default select example">
+                          <option selected>Please select one</option>
+                          <option  v-for="(user, index) in users" v-bind:value="user.id">{{ user.email }}</option>
                         </select>
                       </div>
                     </div>
@@ -80,6 +81,7 @@
           todos:[],
           api: 'https://tt-todo.test/api/todos',
           users_api: 'https://tt-todo.test/api/users',
+          update_task_status_api: 'https://tt-todo.test/api/update-task-status',
           input_title: '',
           input_description: '',
           input_deadline: '',
@@ -101,7 +103,12 @@
       methods:{
         saveTask(){
           if (this.input_title.length > 0 && this.input_description.length > 0 && this.input_deadline.length > 0){
-            let data = {'title': this.input_title, 'description': this.input_description, 'deadline': this.input_deadline};
+            let data = {
+              'title': this.input_title,
+              'description': this.input_description,
+              'deadline': this.input_deadline,
+              'assigned_to': this.input_assigned_to
+            };
 
             this.axios.post(this.api, data).then(res=>{
               this.todos.push(res.data);
@@ -146,6 +153,19 @@
 
           if (index >= 0){
             this.axios.delete(this.api+'/'+id).then(res=>{
+              this.todos.splice(index,1);
+            })
+          }
+        },
+        updateTaskStatus(id){
+          let data = {'status': 1};
+
+          let index = this.todos.findIndex(object => {
+            return object.id === id;
+          });
+
+          if (index >= 0){
+            this.axios.post(this.update_task_status_api+'/'+id, data).then(res=>{
               this.todos.splice(index,1);
             })
           }

@@ -11,7 +11,7 @@ class Todo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'deadline'];
+    protected $fillable = ['title', 'description', 'deadline', 'assigned_to', 'status'];
 
     protected function deadline(): Attribute
     {

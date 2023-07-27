@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TodoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +23,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::get('/todo', function (){
         return view('todo');
     })->name('todo');
 
+    Route::resource('api/todos', TodoController::class);
+    Route::post('api/update-task-status/{id}', [HomeController::class, 'updateTaskStatus'])->name('update.task.status');
+    Route::resource('api/users', UserController::class, ['only' => ['index']]);
 
 });

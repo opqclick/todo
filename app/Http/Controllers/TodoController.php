@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
@@ -13,7 +14,11 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return response()->json(Todo::get());
+        return response()->json(
+            Todo::where('assigned_to', Auth::user()->id)
+                ->orWhere('status', 0)
+                ->get()
+        );
     }
 
     /**
@@ -29,9 +34,15 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //return Carbon::createFromFormat('Y-m-d', $request->deadline);
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'deadline' => $request->deadline,
+            'assigned_to' => !empty($request->assigned_to) ? $request->assigned_to : Auth::user()->id,
+        ];
 
-        $todo = Todo::create($request->all());
+        $todo = Todo::create($data);
+
         return response()->json($todo);
     }
 

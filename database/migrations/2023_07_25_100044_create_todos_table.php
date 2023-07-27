@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->date('deadline');
+            $table->integer('assigned_to');
+            $table->boolean('status')->default(0); // 0=Not Done, 1=Done
             $table->timestamps();
         });
     }
