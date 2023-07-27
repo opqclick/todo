@@ -10,13 +10,19 @@ import { createApp } from 'vue';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+import Toaster from '@meforma/vue-toaster';
+
 const app = createApp({});
+
+app.use(Toaster)
 
 app.use(VueAxios, axios)
 
+import WelcomeComponent from "./components/WelcomeComponent.vue";
 import TodoComponent from "./components/TodoComponent.vue";
-app.component('todo-component', TodoComponent);
 
+app.component('welcome-component', WelcomeComponent);
+app.component('todo-component', TodoComponent);
 
 app.mount('#app');
 
